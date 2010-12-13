@@ -1,0 +1,138 @@
+// Let's start with the basics
+$base-color: #5E412F;
+$base-gradient: 'bevel';
+
+// Lists
+$list-bg-color: #FCEBB6;
+
+$include-default-icons: false;
+
+@import 'sencha-touch/default/all';
+
+@include sencha-panel;
+@include sencha-buttons;
+//@include sencha-sheet;
+@include sencha-loading-spinner;
+//@include sencha-picker;
+@include sencha-tabs;
+@include sencha-toolbar;
+@include sencha-toolbar-forms;
+//@include sencha-carousel;
+@include sencha-indexbar;
+@include sencha-list;
+@include sencha-layout;
+@include sencha-form;
+//@include sencha-msgbox;
+
+@include pictos-iconmask("settings9");
+
+
+// CUSTOM STYLESHEETS
+#pre-loading-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $base-color;
+	background-repeat: no-repeat;
+	background-position: top center;
+	text-align: center;
+	z-index: 2000;
+}
+
+/* ============================================================================================================================
+== BUBBLE WITH A RIGHT-ANGLED TRIANGLE
+** ============================================================================================================================ */
+$bubble-bg-color-left: #78C0A8;
+$bubble-bg-color: #F07818;
+
+/* THE SPEECH BUBBLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.triangle-right {
+	position: relative;
+	padding: 5px;
+	//margin: 1em 0 3em;
+	color: #fff;
+	background: $bubble-bg-color; /* default background for browsers without gradient support */
+
+	/* css3 */
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+}
+
+
+/* Variant : for left positioned triangle
+------------------------------------------ */
+
+.triangle-right.left {
+	margin-left: 50px;
+	background:$bubble-bg-color-left
+}
+
+/* Variant : for right positioned triangle
+------------------------------------------ */
+
+.triangle-right.right {
+	margin-right:50px;
+	background:$bubble-bg-color;
+}
+
+/* THE TRIANGLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.triangle-right:after {
+	content:"";
+	display:block; /* reduce the damage in FF3.0 */
+	position:absolute;
+	bottom:-5px; /* value = - border-top-width - border-bottom-width */
+	left:50px; /* controls horizontal position */
+	width:0;
+	height:0;
+	border-width:50px 0 0 50px; /* vary these values to change the angle of the vertex */
+	border-style:solid;
+	border-color:$bubble-bg-color transparent;
+}
+
+/* Variant : left
+------------------------------------------ */
+
+.triangle-right.left:after {
+	top: 8px;
+	left:-20px; /* value = - border-left-width - border-right-width */
+	bottom:auto;
+	border-width:7px 20px 0 0; /* vary these values to change the angle of the vertex */
+	border-color:transparent $bubble-bg-color-left;
+}
+
+/* Variant : right
+------------------------------------------ */
+
+.triangle-right.right:after {
+	top:8px;
+	right:-20px; /* value = - border-left-width - border-right-width */
+	bottom:auto;
+	left:auto;
+	border-width:7px 0 0 20px; /* vary these values to change the angle of the vertex */
+	border-color:transparent $bubble-bg-color ;
+}
+/*---------------------------------------------------------------------------*/
+
+.settings {
+	-webkit-mask-image:
+		url('data:image/png;base64,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')
+}
+.x-list-item-body img.even {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+.x-list-item-body img.odd {
+	float: left;
+}
+
+.x-list-item-body span .nickname {
+	font-style: italic;
+}

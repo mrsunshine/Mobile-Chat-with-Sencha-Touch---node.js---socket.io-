@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rockstarapps>
+    
+
+
+
+
+
+
+
+
+
+
+<file name="js/build/app.all.js">
+        <min>true</min>
+        <comp>true</comp>
+        <closureCompiler>false</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>false</removeLogs>
+        <oldFileNames>true</oldFileNames>
+        <dependencies>
+            <file>js/lib/ext.util.md5.js</file>
+            <file>js/lib/socket.io.js</file>
+            <file>js/index.js</file>
+            <file>js/conrollers/Controller.Viewport.js</file>
+            <file>js/conrollers/Controller.Chat.js</file>
+            <file>js/conrollers/Controller.Config.js</file>
+            <file>js/models/Model.ChatMessage.js</file>
+            <file>js/models/Model.Config.js</file>
+            <file>js/stores/Store.Chat.js</file>
+            <file>js/stores/Store.Config.js</file>
+            <file>js/views/View.Viewport.js</file>
+            <file>js/views/View.Config.js</file>
+            <file>js/views/View.Chat.js</file>
+        </dependencies>
+        <properties/>
+    </file>
+</rockstarapps>

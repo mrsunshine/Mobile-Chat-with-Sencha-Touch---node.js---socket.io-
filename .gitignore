@@ -1,0 +1,6 @@
+.DS_Store
+.project
+.settings
+.sass-cache
+sencha-touch
+bubble.css
