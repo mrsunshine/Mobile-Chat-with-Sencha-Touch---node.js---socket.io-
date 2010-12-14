@@ -2109,6 +2109,80 @@ Ext.regApplication('App', {
  */
 
 /*
+ * START OF FILE - /ST-Websocket-Mobile-Chat/js/lib/App.util.Socketio.js
+ */
+Ext.ns('App.util');
+/**
+ * Socket.io  wrapper class
+ * @class App.util.Socketio
+ * @extends Ext.util.Observable
+ */
+App.util.Socketio = Ext.extend(Ext.util.Observable, {
+
+	constructor: function(host, options){
+
+		options = options || {};
+
+
+		App.util.Socketio.superclass.constructor.call(
+			this
+		);
+
+		this.socket = new io.Socket(host, options);
+		var that = this;
+
+		this.socket.on('connect', function(){
+			that.onConnect();
+		});
+		this.socket.on('message', function(data){
+			that.onMessage(data);
+		});
+		this.socket.on('close', function(){
+			that.onClose();
+		});
+		this.socket.on('disconnect', function(){
+			that.onDisconnect();
+		});
+
+	},
+
+	/**
+	 * connect
+	 */
+	connect: function() {
+		this.socket.connect();
+	},
+
+	disconnect: function(){
+		this.socket.disconnect();
+	},
+
+	send: function(message) {
+		this.socket.send(message);
+	},
+
+	onConnect: function() {
+		this.fireEvent('connect');
+	},
+
+	onDisconnect: function() {
+		this.fireEvent('disconnect');
+	},
+
+	onClose: function() {
+		this.fireEvent('close');
+	},
+
+	onMessage: function(message) {
+		this.fireEvent('message', message);
+	}
+});
+Ext.reg('App.util.Socketio', App.util.Socketio);
+/*
+ * END OF FILE - /ST-Websocket-Mobile-Chat/js/lib/App.util.Socketio.js
+ */
+
+/*
  * START OF FILE - /ST-Websocket-Mobile-Chat/js/conrollers/Controller.Viewport.js
  */
 /**
@@ -2205,38 +2279,48 @@ Ext.regController('Chat', {
 	 *
 	 */
 	initSocketConnection: function() {
-		var chatStore = new App.Store.Chat();
-		var configStore = Ext.StoreMgr.get('ConfigStore');
-		var settings = configStore.getAt(0);
+		this.chatStore = new App.Store.Chat();
+		this.configStore = Ext.StoreMgr.get('ConfigStore');
+		var settings = this.configStore.getAt(0);
+
+		this.socket = new App.util.Socketio(settings.get('server'), {port: 4000});
+		this.socket.connect();
+
+		// Event Listener
+		this.socket.on(
+			'connect',
+			this.registerUser,
+			this
+		);
+
+		this.socket.on(
+			'message',
+			this.addMessageToChatStore,
+			this
+		);
+
+		App.on(
+			'newMsg',
+			this.sendMessageToServer,
+			this
+		);
+	},
+
+	sendMessageToServer: function(msg){
+		this.socket.send(msg);
+	},
+
+	addMessageToChatStore: function(message) {
+		this.chatStore.add(message);
+	},
+
+	registerUser: function() {
+		var settings = this.configStore.getAt(0);
 		var user = {
 			nickname: settings.get('nickname'),
 			gravatar: settings.get('gravatar')
 		};
-
-		var socket = new io.Socket(settings.get('server'), {port: 4000});
-		this.socket = socket;
-
-		socket.connect();
-
-		socket.on('connect',
-			function() {
-				socket.send(user);
-			},
-			this
-		);
-
-
-		socket.on('message', function(message) {
-			chatStore.add(message);
-		});
-
-		App.on(
-			'newMsg',
-			function(msg){
-				this.socket.send(msg);
-			},
-			this
-		);
+		this.socket.send(user);
 	},
 
 	/**

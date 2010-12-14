@@ -11,6 +11,12 @@
 
 
 
+
+
+
+
+
+
 <file name="js/build/app.all.js">
         <min>true</min>
         <comp>true</comp>
@@ -27,6 +33,7 @@
             <file>js/lib/ext.util.md5.js</file>
             <file>js/lib/socket.io.js</file>
             <file>js/index.js</file>
+            <file>js/lib/App.util.Socketio.js</file>
             <file>js/conrollers/Controller.Viewport.js</file>
             <file>js/conrollers/Controller.Chat.js</file>
             <file>js/conrollers/Controller.Config.js</file>
